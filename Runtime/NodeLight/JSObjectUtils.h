@@ -12,3 +12,4 @@ void JSObjectSetPropertyWithUTF8StringName(JSContextRef ctx, JSObjectRef object,
 JSObjectRef JSObjectMakeDateFromPOSIXTime(JSContextRef context, time_t time);
 JSObjectRef JSObjectGetModule(JSContextRef context, const char* module, JSValueRef* exception);
 JSObjectRef JSObjectGetProcess(JSContextRef context);
+JSValueRef JSExecuteInSandbox(JSContextRef context, NSString* filename, NSString* code, NSString* codeURL, JSValueRef* exception);

@@ -13,6 +13,8 @@
 @property (nonatomic, assign) int exitCode;
 @property (nonatomic, retain) id <NodeFS> fs;
 
+- (void)setArguments:(NSArray <NSString*>*)argv inContext:(JSContextRef)context;
+
 - (instancetype)initWithContext:(JSContextRef)context;
 
 - (void)mainLoop:(void (^)(int errorCode))block;
@@ -22,6 +24,9 @@
 - (void)writeData:(dispatch_data_t)data inFileDescriptor:(dispatch_fd_t)fd completionBlock:(void (^)(dispatch_data_t data, int error))handler;
 
 - (void)unhandledException:(JSValueRef)exception inContext:(JSContextRef)context;
+
+- (void)loadModule:(const char*)code withName:(NSString*)name withPath:(NSString*)path inContext:(JSContextRef)context;
+- (void)loadModule:(NSURL*)url withName:(NSString*)name inContext:(JSContextRef)context;
 @end
 
 NodeContext* JSContextGetNodeContext(JSContextRef context);

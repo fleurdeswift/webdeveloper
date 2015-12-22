@@ -80,3 +80,31 @@ JSObjectRef JSObjectGetProcess(JSContextRef context) {
     JSStringRelease(processNameRef);
     return (JSObjectRef)processValueRef;
 }
+
+JSValueRef JSExecuteInSandbox(JSContextRef context, NSString* filename, NSString* code, NSString* codeURL, JSValueRef* exception) {
+    JSObjectRef globalObject          = JSContextGetGlobalObject(context);
+    JSStringRef createSandboxNameRef  = JSStringCreateWithUTF8CString("createSandbox");
+    JSValueRef  createSandboxValueRef = JSObjectGetProperty(context, globalObject, createSandboxNameRef, exception);
+    
+    JSStringRelease(createSandboxNameRef);
+    if (*exception)
+        return NULL;
+    
+    JSValueRef fileNameRef = JSValueFromNSString(context, filename);
+    JSObjectRef sandboxRef = JSObjectCallAsConstructor(context, (JSObjectRef)createSandboxValueRef, 1, &fileNameRef, exception);
+    if (*exception)
+        return NULL;
+
+    code = [NSString stringWithFormat:@"(function() { var __filename = \"%@\"; %@})();", filename, code];
+    
+    JSStringRef codeRef    = JSStringCreateWithCFString((__bridge CFStringRef)code);
+    JSStringRef codeURLRef = JSStringCreateWithCFString((__bridge CFStringRef)codeURL);
+    JSValueRef  returnRef  = JSEvaluateScript(context, codeRef, sandboxRef, codeURLRef, 1, exception);
+    
+    JSStringRelease(codeRef);
+    JSStringRelease(codeURLRef);
+    if (*exception)
+        return NULL;
+    
+    return returnRef;
+}

@@ -4,6 +4,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <NodeLight/JSObjectUtils.h>
+#import <NodeLight/JSStringUtils.h>
 #import <NodeLight/NodeBuffer.h>
 #import <NodeLight/NodeContext.h>
 #import <NodeLight/NodeFS.h>

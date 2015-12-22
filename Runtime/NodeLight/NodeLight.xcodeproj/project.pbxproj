@@ -14,6 +14,19 @@
 		7B0A85A31C238A9700499C08 /* NodeFSStats.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B99816F1C20E0C30088F221 /* NodeFSStats.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7B1CDCD51C235761004162C5 /* BaseTest.js in Resources */ = {isa = PBXBuildFile; fileRef = 7B1CDCD31C23569D004162C5 /* BaseTest.js */; };
 		7B4612171C22393400953064 /* BufferTest.js in Resources */ = {isa = PBXBuildFile; fileRef = 7B4612161C22393400953064 /* BufferTest.js */; };
+		7BA0D7381C29F383001FCBCB /* JSContextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981221C1FA1BF0088F221 /* JSContextUtils.m */; };
+		7BA0D7391C29F383001FCBCB /* JSObjectUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99816C1C20DDC00088F221 /* JSObjectUtils.m */; };
+		7BA0D73A1C29F383001FCBCB /* JSStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981191C1F97000088F221 /* JSStringUtils.m */; };
+		7BA0D73B1C29F383001FCBCB /* JSValueUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981681C20DAD20088F221 /* JSValueUtils.m */; };
+		7BA0D73C1C29F38D001FCBCB /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981261C1FA7770088F221 /* NSDataExtensions.m */; };
+		7BA0D73D1C29F38E001FCBCB /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981261C1FA7770088F221 /* NSDataExtensions.m */; };
+		7BA0D73E1C29F395001FCBCB /* NodeBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981161C1F969A0088F221 /* NodeBuffer.m */; };
+		7BA0D73F1C29F395001FCBCB /* NodeContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE583B11C20F7890068FE41 /* NodeContext.m */; };
+		7BA0D7401C29F395001FCBCB /* NodeFD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB81E31C246F6400646C21 /* NodeFD.m */; };
+		7BA0D7411C29F395001FCBCB /* NodeFS.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B0A859A1C237F6F00499C08 /* NodeFS.m */; };
+		7BA0D7421C29F395001FCBCB /* NodeFSStats.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981701C20E0C30088F221 /* NodeFSStats.m */; };
+		7BA0D7431C29F395001FCBCB /* NodeWritableStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99811E1C1F9BFB0088F221 /* NodeWritableStream.m */; };
+		7BA0D74A1C29F711001FCBCB /* NodeLightSources.c in Sources */ = {isa = PBXBuildFile; fileRef = 7BA0D7481C29F70E001FCBCB /* NodeLightSources.c */; };
 		7BAB81E41C246F6400646C21 /* NodeFD.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BAB81E21C246F6400646C21 /* NodeFD.h */; };
 		7BAB81E51C246F6400646C21 /* NodeFD.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BAB81E31C246F6400646C21 /* NodeFD.m */; };
 		7BDBC6691C21DF2300F2F73F /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BDBC6681C21DF2300F2F73F /* Tests.m */; };
@@ -21,9 +34,9 @@
 		7BDBC6711C21DFA600F2F73F /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B9981121C1F96660088F221 /* JavaScriptCore.framework */; };
 		7BE583991C20F4820068FE41 /* JSContextUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9981211C1FA1BF0088F221 /* JSContextUtils.h */; };
 		7BE5839A1C20F4820068FE41 /* JSContextUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981221C1FA1BF0088F221 /* JSContextUtils.m */; };
-		7BE5839B1C20F4820068FE41 /* JSObjectUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B99816B1C20DDC00088F221 /* JSObjectUtils.h */; };
+		7BE5839B1C20F4820068FE41 /* JSObjectUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B99816B1C20DDC00088F221 /* JSObjectUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BE5839C1C20F4820068FE41 /* JSObjectUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99816C1C20DDC00088F221 /* JSObjectUtils.m */; };
-		7BE5839D1C20F4820068FE41 /* JSStringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B99811A1C1F97000088F221 /* JSStringUtils.h */; };
+		7BE5839D1C20F4820068FE41 /* JSStringUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B99811A1C1F97000088F221 /* JSStringUtils.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BE5839E1C20F4820068FE41 /* JSStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981191C1F97000088F221 /* JSStringUtils.m */; };
 		7BE5839F1C20F4820068FE41 /* JSValueUtils.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9981671C20DAD20088F221 /* JSValueUtils.h */; };
 		7BE583A01C20F4820068FE41 /* JSValueUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981681C20DAD20088F221 /* JSValueUtils.m */; };
@@ -33,7 +46,6 @@
 		7BE583A51C20F4820068FE41 /* NodeWritableStream.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B99811D1C1F9BFB0088F221 /* NodeWritableStream.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BE583A61C20F4820068FE41 /* NodeWritableStream.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B99811E1C1F9BFB0088F221 /* NodeWritableStream.m */; };
 		7BE583A71C20F4820068FE41 /* NSDataExtensions.h in Headers */ = {isa = PBXBuildFile; fileRef = 7B9981251C1FA7770088F221 /* NSDataExtensions.h */; };
-		7BE583A81C20F4820068FE41 /* NSDataExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7B9981261C1FA7770088F221 /* NSDataExtensions.m */; };
 		7BE583AF1C20F7520068FE41 /* NodeLight.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BE583AD1C20F7270068FE41 /* NodeLight.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BE583B31C20F7890068FE41 /* NodeContext.h in Headers */ = {isa = PBXBuildFile; fileRef = 7BE583B01C20F7890068FE41 /* NodeContext.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7BE583B51C20F7890068FE41 /* NodeContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 7BE583B11C20F7890068FE41 /* NodeContext.m */; };
@@ -42,6 +54,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		7B3016E71C2A1AC8007D3460 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 7B9980FE1C1F96340088F221 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 7BE583901C20F47A0068FE41;
+			remoteInfo = NodeLight;
+		};
 		7BDBC66C1C21DF2300F2F73F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7B9980FE1C1F96340088F221 /* Project object */;
@@ -75,6 +94,9 @@
 		7B99816C1C20DDC00088F221 /* JSObjectUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JSObjectUtils.m; sourceTree = "<group>"; };
 		7B99816F1C20E0C30088F221 /* NodeFSStats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeFSStats.h; sourceTree = "<group>"; };
 		7B9981701C20E0C30088F221 /* NodeFSStats.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeFSStats.m; sourceTree = "<group>"; };
+		7BA0D72F1C29F36C001FCBCB /* libNodeLightStatic.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libNodeLightStatic.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7BA0D7451C29F511001FCBCB /* inliner.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; name = inliner.py; path = ../../Scripts/inliner.py; sourceTree = "<group>"; };
+		7BA0D7481C29F70E001FCBCB /* NodeLightSources.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = NodeLightSources.c; sourceTree = "<group>"; };
 		7BAB81E21C246F6400646C21 /* NodeFD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NodeFD.h; sourceTree = "<group>"; };
 		7BAB81E31C246F6400646C21 /* NodeFD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NodeFD.m; sourceTree = "<group>"; };
 		7BDBC6661C21DF2300F2F73F /* NodeLightTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = NodeLightTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -91,6 +113,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7BA0D72C1C29F36C001FCBCB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7BDBC6631C21DF2300F2F73F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -117,29 +146,40 @@
 				7BE583A91C20F48E0068FE41 /* Utils */,
 				7BBD97C91C21F2B90008502E /* Extensions */,
 				7BE583AB1C20F70C0068FE41 /* Node.js */,
-				7BDBC6671C21DF2300F2F73F /* NodeLightTests */,
-				7B9981141C1F968C0088F221 /* Frameworks */,
-				7B9981071C1F96340088F221 /* Products */,
+				7BDBC6671C21DF2300F2F73F /* Tests */,
+				7B9981141C1F968C0088F221 /* • Frameworks */,
+				7BA0D7471C29F5D0001FCBCB /* • Derived Sources */,
+				7B9981071C1F96340088F221 /* • Products */,
 			);
 			sourceTree = "<group>";
 		};
-		7B9981071C1F96340088F221 /* Products */ = {
+		7B9981071C1F96340088F221 /* • Products */ = {
 			isa = PBXGroup;
 			children = (
 				7BE583911C20F47A0068FE41 /* NodeLight.framework */,
 				7BDBC6661C21DF2300F2F73F /* NodeLightTests.xctest */,
+				7BA0D72F1C29F36C001FCBCB /* libNodeLightStatic.a */,
 			);
-			name = Products;
+			name = "• Products";
 			sourceTree = "<group>";
 		};
-		7B9981141C1F968C0088F221 /* Frameworks */ = {
+		7B9981141C1F968C0088F221 /* • Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				7BDBC6721C21DFF400F2F73F /* Cocoa.framework */,
 				7B9981121C1F96660088F221 /* JavaScriptCore.framework */,
 			);
-			name = Frameworks;
+			name = "• Frameworks";
 			sourceTree = "<group>";
+		};
+		7BA0D7471C29F5D0001FCBCB /* • Derived Sources */ = {
+			isa = PBXGroup;
+			children = (
+				7BA0D7481C29F70E001FCBCB /* NodeLightSources.c */,
+			);
+			name = "• Derived Sources";
+			path = DerivedSources;
+			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7BBD97C91C21F2B90008502E /* Extensions */ = {
 			isa = PBXGroup;
@@ -150,7 +190,7 @@
 			name = Extensions;
 			sourceTree = "<group>";
 		};
-		7BDBC6671C21DF2300F2F73F /* NodeLightTests */ = {
+		7BDBC6671C21DF2300F2F73F /* Tests */ = {
 			isa = PBXGroup;
 			children = (
 				7B1CDCD31C23569D004162C5 /* BaseTest.js */,
@@ -160,7 +200,6 @@
 				7BDBC66A1C21DF2300F2F73F /* Info.plist */,
 				7BDBC6681C21DF2300F2F73F /* Tests.m */,
 			);
-			name = NodeLightTests;
 			path = Tests;
 			sourceTree = "<group>";
 		};
@@ -205,6 +244,7 @@
 			children = (
 				7BE583B81C20F8660068FE41 /* BaseSystem.js */,
 				7BE583B71C20F8660068FE41 /* ModulePath.js */,
+				7BA0D7451C29F511001FCBCB /* inliner.py */,
 			);
 			name = "JavaScript Code";
 			sourceTree = "<group>";
@@ -212,6 +252,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		7BA0D72D1C29F36C001FCBCB /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7BE5838E1C20F47A0068FE41 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -234,6 +281,25 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		7BA0D72E1C29F36C001FCBCB /* NodeLightStatic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7BA0D7351C29F36C001FCBCB /* Build configuration list for PBXNativeTarget "NodeLightStatic" */;
+			buildPhases = (
+				7BA0D7441C29F3F7001FCBCB /* ShellScript */,
+				7BA0D72B1C29F36C001FCBCB /* Sources */,
+				7BA0D72C1C29F36C001FCBCB /* Frameworks */,
+				7BA0D72D1C29F36C001FCBCB /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7B3016E81C2A1AC8007D3460 /* PBXTargetDependency */,
+			);
+			name = NodeLightStatic;
+			productName = NodeLightStatic;
+			productReference = 7BA0D72F1C29F36C001FCBCB /* libNodeLightStatic.a */;
+			productType = "com.apple.product-type.library.static";
+		};
 		7BDBC6651C21DF2300F2F73F /* NodeLightTests */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 7BDBC6701C21DF2300F2F73F /* Build configuration list for PBXNativeTarget "NodeLightTests" */;
@@ -279,6 +345,9 @@
 				LastUpgradeCheck = 0720;
 				ORGANIZATIONNAME = WebDeveloper;
 				TargetAttributes = {
+					7BA0D72E1C29F36C001FCBCB = {
+						CreatedOnToolsVersion = 7.3;
+					};
 					7BDBC6651C21DF2300F2F73F = {
 						CreatedOnToolsVersion = 7.2;
 					};
@@ -295,11 +364,12 @@
 				en,
 			);
 			mainGroup = 7B9980FD1C1F96340088F221;
-			productRefGroup = 7B9981071C1F96340088F221 /* Products */;
+			productRefGroup = 7B9981071C1F96340088F221 /* • Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				7BE583901C20F47A0068FE41 /* NodeLight */,
+				7BA0D72E1C29F36C001FCBCB /* NodeLightStatic */,
 				7BDBC6651C21DF2300F2F73F /* NodeLightTests */,
 			);
 		};
@@ -328,7 +398,46 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		7BA0D7441C29F3F7001FCBCB /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../../Scripts/inliner.py",
+				"$(SRCROOT)/BaseSystem.js",
+				"$(SRCROOT)/ModulePath.js",
+			);
+			outputPaths = (
+				"$(BUILT_PRODUCTS_DIR)/DerivedSources/NodeLightSources.c",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "mkdir -p $BUILT_PRODUCTS_DIR/DerivedSources\n$SCRIPT_INPUT_FILE_0 $SCRIPT_INPUT_FILE_1 $SCRIPT_INPUT_FILE_2 > $SCRIPT_OUTPUT_FILE_0\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		7BA0D72B1C29F36C001FCBCB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7BA0D7381C29F383001FCBCB /* JSContextUtils.m in Sources */,
+				7BA0D7391C29F383001FCBCB /* JSObjectUtils.m in Sources */,
+				7BA0D73A1C29F383001FCBCB /* JSStringUtils.m in Sources */,
+				7BA0D73B1C29F383001FCBCB /* JSValueUtils.m in Sources */,
+				7BA0D73C1C29F38D001FCBCB /* NSDataExtensions.m in Sources */,
+				7BA0D73E1C29F395001FCBCB /* NodeBuffer.m in Sources */,
+				7BA0D73F1C29F395001FCBCB /* NodeContext.m in Sources */,
+				7BA0D7401C29F395001FCBCB /* NodeFD.m in Sources */,
+				7BA0D7411C29F395001FCBCB /* NodeFS.m in Sources */,
+				7BA0D7421C29F395001FCBCB /* NodeFSStats.m in Sources */,
+				7BA0D7431C29F395001FCBCB /* NodeWritableStream.m in Sources */,
+				7BA0D74A1C29F711001FCBCB /* NodeLightSources.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		7BDBC6621C21DF2300F2F73F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -351,13 +460,18 @@
 				7BE583B51C20F7890068FE41 /* NodeContext.m in Sources */,
 				7BE583A41C20F4820068FE41 /* NodeFSStats.m in Sources */,
 				7BE583A61C20F4820068FE41 /* NodeWritableStream.m in Sources */,
-				7BE583A81C20F4820068FE41 /* NSDataExtensions.m in Sources */,
+				7BA0D73D1C29F38E001FCBCB /* NSDataExtensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		7B3016E81C2A1AC8007D3460 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 7BE583901C20F47A0068FE41 /* NodeLight */;
+			targetProxy = 7B3016E71C2A1AC8007D3460 /* PBXContainerItemProxy */;
+		};
 		7BDBC66D1C21DF2300F2F73F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7BE583901C20F47A0068FE41 /* NodeLight */;
@@ -445,6 +559,28 @@
 			};
 			name = Release;
 		};
+		7BA0D7361C29F36C001FCBCB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"NODELIGHT_STATIC=1",
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		7BA0D7371C29F36C001FCBCB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = "NODELIGHT_STATIC=1";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		7BDBC66E1C21DF2300F2F73F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -517,6 +653,15 @@
 			buildConfigurations = (
 				7B99810D1C1F96340088F221 /* Debug */,
 				7B99810E1C1F96340088F221 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7BA0D7351C29F36C001FCBCB /* Build configuration list for PBXNativeTarget "NodeLightStatic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7BA0D7361C29F36C001FCBCB /* Debug */,
+				7BA0D7371C29F36C001FCBCB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

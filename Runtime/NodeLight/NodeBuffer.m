@@ -158,10 +158,12 @@ void NodeBufferExpose(JSContextRef context, JSValueRef* exception) {
         return;
     
     JSStringRef bufferNameRef = JSStringCreateWithUTF8CString("Buffer");
-    JSObjectSetProperty(context, bufferModuleRef, bufferNameRef, JSObjectMakeConstructor(context, NodeBufferClass(), NodeBufferConstruct), kJSPropertyAttributeNone, exception);
+    JSObjectRef bufferRef = JSObjectMakeConstructor(context, NodeBufferClass(), NodeBufferConstruct);
+    JSObjectSetProperty(context, bufferModuleRef, bufferNameRef, bufferRef, kJSPropertyAttributeNone, exception);
+    JSObjectSetProperty(context, JSContextGetGlobalObject(context), bufferNameRef, bufferRef, kJSPropertyAttributeNone, exception);
     JSStringRelease(bufferNameRef);
 
     bufferNameRef = JSStringCreateWithUTF8CString("SlowBuffer");
-    JSObjectSetProperty(context, bufferModuleRef, bufferNameRef, JSObjectMakeConstructor(context, NodeBufferClass(), NodeBufferConstruct), kJSPropertyAttributeNone, exception);
+    JSObjectSetProperty(context, bufferModuleRef, bufferNameRef, bufferRef, kJSPropertyAttributeNone, exception);
     JSStringRelease(bufferNameRef);
 }

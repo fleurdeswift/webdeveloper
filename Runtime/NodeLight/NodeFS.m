@@ -46,6 +46,14 @@
     return [NSData dataWithContentsOfFile:[self map:path]];
 }
 
+- (NSInteger)writeFile:(NSString *)path data:(NSData*)data options:(NSDictionary *)options error:(NSError**)error {
+    if ([data writeToFile:[self map:path] options:0 error:error]) {
+        return data.length;
+    }
+    
+    return -1;
+}
+
 - (NSArray<NSString*>*)readDir:(NSString *)path
 {
     NSError *error = nil;
@@ -150,6 +158,78 @@
 
 @end
 
+@implementation InlineNodeFS {
+    id <NodeFS> _chain;
+    NSDictionary<NSString*,NSData*>* _inlines;
+}
+
+- (instancetype)initWithInlineMap:(NSDictionary<NSString*,NSData*>*)inlines chain:(id <NodeFS>)chain {
+    if (self = [super init]) {
+        _chain   = chain;
+        _inlines = inlines;
+    }
+    
+    return self;
+}
+
+- (NSString*)cwd {
+    return _chain.cwd;
+}
+
+- (void)setCwd:(NSString*)cwd {
+    _chain.cwd = cwd;
+}
+
+- (NSData *)readFile:(NSString *)path options:(NSDictionary *)options {
+    if (_inlines[path]) {
+        return _inlines[path];
+    }
+    
+    return [_chain readFile:path options:options];
+}
+
+- (NSInteger)writeFile:(NSString *)path data:(NSData*)data options:(NSDictionary *)options error:(NSError**)error {
+    return [_chain writeFile:path data:data options:options error:error];
+}
+
+- (NSArray<NSString*>*)readDir:(NSString *)path {
+    return [_chain readDir:path];
+}
+
+- (BOOL)exists:(NSString *)path {
+    if (_inlines[path]) {
+        return YES;
+    }
+    
+    return [_chain exists:path];
+}
+
+- (void)stat:(NSString *)path completionBlock:(void (^)(struct stat s, NSError* error))block {
+    return [_chain stat:path completionBlock:block];
+}
+
+- (void)stat:(NSString *)path stat:(struct stat*)s error:(NSError**)error {
+    return [_chain stat:path stat:s error:error];
+}
+
+- (dispatch_fd_t)open:(NSString *)path flags:(NSString *)flags mode:(mode_t)mode error:(NSError**)error {
+    return [_chain open:path flags:flags mode:mode error:error];
+}
+
+- (NSUInteger)seek:(dispatch_fd_t)fd position:(NSInteger)position error:(NSError**)error {
+    return [_chain seek:fd position:position error:error];
+}
+
+- (NSInteger)write:(dispatch_fd_t)fd data:(NSData*)data error:(NSError**)error {
+    return [_chain write:fd data:data error:error];
+}
+
+- (void)close:(dispatch_fd_t)fd {
+    return [_chain close:fd];
+}
+
+@end
+
 static JSValueRef NodeFSExistsSync(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
     if (argumentCount == 0) {
         *exception = JSObjectMakeErrorFromPOSIXError(ctx, EINVAL);
@@ -182,6 +262,33 @@ static JSValueRef NodeFSReadFileSync(JSContextRef ctx, JSObjectRef function, JSO
     }
     
     return JSValueFromNSData(ctx, data);
+}
+
+static JSValueRef NodeFSWriteFileSync(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
+    if (argumentCount < 2) {
+        *exception = JSObjectMakeErrorFromPOSIXError(ctx, EINVAL);
+        return JSValueMakeUndefined(ctx);
+    }
+    
+    NSString*  path     = JSValueToNSString(ctx, arguments[0]);
+    JSValueRef encoding = JSValueMakeUndefined(ctx);
+    
+    if (argumentCount > 2) {
+        encoding = arguments[2];
+    }
+
+    
+    NodeContext* context = JSContextGetNodeContext(ctx);
+    NSError*     error   = nil;
+    NSData*      data    = JSValueToNSData(ctx, arguments[1], encoding);
+    NSInteger    length  = [context.fs writeFile:path data:data options:nil error:&error];
+    
+    if (error) {
+        *exception = JSObjectMakeErrorFromPOSIXError(ctx, (int)error.code);
+        return JSValueMakeUndefined(ctx);
+    }
+    
+    return JSValueMakeNumber(ctx, length);
 }
 
 static JSValueRef NodeFSReadDirSync(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
@@ -290,19 +397,35 @@ static JSValueRef NodeFSOpenSync(JSContextRef ctx, JSObjectRef function, JSObjec
     return NodeFDCreate(ctx, fd);
 }
 
+static dispatch_fd_t NodeFSGetFD(JSContextRef ctx, JSValueRef fdValue, JSValueRef* exception) {
+    dispatch_fd_t fd = -1;
+    if (JSValueIsNumber(ctx, fdValue)) {
+        fd = (dispatch_fd_t)JSValueToNumber(ctx, fdValue, NULL);
+    }
+    else if (JSValueIsObjectOfClass(ctx, fdValue, NodeFDClass())) {
+        fd = (dispatch_fd_t)(NSInteger)JSObjectGetPrivate((JSObjectRef)fdValue);
+    }
+    else {
+        *exception = JSObjectMakeErrorFromPOSIXError(ctx, EINVAL);
+        return -1;
+    }
+    
+    if (fd < 0) {
+        *exception = JSObjectMakeErrorFromPOSIXError(ctx, EBADF);
+        return -1;
+    }
+    
+    return fd;
+}
+
 static JSValueRef NodeFSCloseSync(JSContextRef ctx, JSObjectRef function, JSObjectRef thisObject, size_t argumentCount, const JSValueRef arguments[], JSValueRef* exception) {
     if (argumentCount == 0) {
         *exception = JSObjectMakeErrorFromPOSIXError(ctx, EINVAL);
         return JSValueMakeUndefined(ctx);
     }
     
-    if (!JSValueIsObjectOfClass(ctx, arguments[0], NodeFDClass())) {
-        *exception = JSObjectMakeErrorFromPOSIXError(ctx, EINVAL);
-        return JSValueMakeUndefined(ctx);
-    }
-    
-    dispatch_fd_t fd = (dispatch_fd_t)(NSInteger)JSObjectGetPrivate((JSObjectRef)arguments[0]);
-    if (fd <= 0) {
+    dispatch_fd_t fd = NodeFSGetFD(ctx, arguments[0], exception);
+    if (*exception) {
         return JSValueMakeUndefined(ctx);
     }
     
@@ -317,10 +440,9 @@ static JSValueRef NodeFSWriteSync(JSContextRef ctx, JSObjectRef function, JSObje
         *exception = JSObjectMakeErrorFromPOSIXError(ctx, EINVAL);
         return JSValueMakeUndefined(ctx);
     }
-
-    dispatch_fd_t fd = (dispatch_fd_t)(NSInteger)JSObjectGetPrivate((JSObjectRef)arguments[0]);
-    if (fd <= 0) {
-        *exception = JSObjectMakeErrorFromPOSIXError(ctx, EBADF);
+    
+    dispatch_fd_t fd = NodeFSGetFD(ctx, arguments[0], exception);
+    if (*exception) {
         return JSValueMakeUndefined(ctx);
     }
 
@@ -395,6 +517,10 @@ void NodeFSExpose(JSContextRef context, JSValueRef* exception) {
 
     nameRef = JSStringCreateWithUTF8CString("readFileSync");
     JSObjectSetProperty(context, fsModuleRef, nameRef, JSObjectMakeFunctionWithCallback(context, nameRef, NodeFSReadFileSync), kJSPropertyAttributeNone, exception);
+    JSStringRelease(nameRef);
+
+    nameRef = JSStringCreateWithUTF8CString("writeFileSync");
+    JSObjectSetProperty(context, fsModuleRef, nameRef, JSObjectMakeFunctionWithCallback(context, nameRef, NodeFSWriteFileSync), kJSPropertyAttributeNone, exception);
     JSStringRelease(nameRef);
 
     nameRef = JSStringCreateWithUTF8CString("readdirSync");

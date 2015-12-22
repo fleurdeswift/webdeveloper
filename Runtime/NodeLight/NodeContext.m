@@ -68,6 +68,11 @@ static JSValueRef NodeContextExit(JSContextRef ctx, JSObjectRef function, JSObje
     return JSValueMakeUndefined(ctx);
 }
 
+#if NODELIGHT_STATIC
+extern const unsigned char BaseSystem_js[];
+extern const unsigned char ModulePath_js[];
+#endif
+
 @implementation NodeContext
 
 - (instancetype)initWithContext:(JSContextRef)context {
@@ -76,17 +81,41 @@ static JSValueRef NodeContextExit(JSContextRef ctx, JSObjectRef function, JSObje
         _group = dispatch_group_create();
         _fs = [[StandardNodeFS alloc] init];
         
+#if NODELIGHT_STATIC
+        [self loadGlobal:(const char*)BaseSystem_js withPath:@"BaseSystem.js" inContext:context];
+#else
         NSBundle* nodeLightBundle = [NSBundle bundleForClass:[NodeContext class]];
         
         [self loadGlobal:[nodeLightBundle URLForResource:@"BaseSystem" withExtension:@"js"] inContext:context];
+#endif
         [self loadNativeGlobals:context];
         
+#if NODELIGHT_STATIC
+        [self loadModule:(const char*)ModulePath_js withName:@"path" withPath:@"ModulePath.js" inContext:context];
+#else
         [self loadModule:[nodeLightBundle URLForResource:@"ModulePath" withExtension:@"js"] withName:@"path" inContext:context];
+#endif
     }
     
     return self;
 }
 
+#if NODELIGHT_STATIC
+- (void)loadGlobal:(const char*)code withPath:(NSString*)name inContext:(JSContextRef)context {
+    @autoreleasepool {
+        JSStringRef scriptRef = JSStringCreateWithUTF8CString(code);
+        JSStringRef urlRef    = JSStringCreateWithCFString((__bridge CFStringRef)name);
+        JSValueRef  exception = NULL;
+        
+        JSEvaluateScript(context, scriptRef, NULL, urlRef, 1, &exception);
+        if (exception)
+            [self unhandledException:exception inContext:context];
+        
+        JSStringRelease(scriptRef);
+        JSStringRelease(urlRef);
+    }
+}
+#else
 - (void)loadGlobal:(NSURL*)url inContext:(JSContextRef)context {
     @autoreleasepool {
         JSStringRef scriptRef = JSStringCreateWithCFString((__bridge CFStringRef)[NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:nil]);
@@ -101,6 +130,7 @@ static JSValueRef NodeContextExit(JSContextRef ctx, JSObjectRef function, JSObje
         JSStringRelease(urlRef);
     }
 }
+#endif
 
 - (void)loadNativeGlobals:(JSContextRef)context {
     JSValueRef exception = NULL;
@@ -137,6 +167,25 @@ static JSValueRef NodeContextExit(JSContextRef ctx, JSObjectRef function, JSObje
     name = JSStringCreateWithUTF8CString("exit");
     JSObjectSetProperty(context, process, name, JSObjectMakeFunctionWithCallback(context, name, NodeContextExit), kJSPropertyAttributeNone, NULL);
     JSStringRelease(name);
+}
+
+- (void)loadModule:(const char*)code withName:(NSString*)name withPath:(NSString*)path inContext:(JSContextRef)context {
+    @autoreleasepool {
+        NSString* script = [NSString stringWithUTF8String:code];
+        
+        script = [NSString stringWithFormat:@"registerModule(\"%@\",function(module) {%@});", name, script];
+        
+        JSStringRef scriptRef = JSStringCreateWithCFString((__bridge CFStringRef)script);
+        JSStringRef urlRef    = JSStringCreateWithCFString((__bridge CFStringRef)path);
+        JSValueRef  exception = NULL;
+        
+        JSEvaluateScript(context, scriptRef, NULL, urlRef, 1, &exception);
+        if (exception)
+            [self unhandledException:exception inContext:context];
+        
+        JSStringRelease(scriptRef);
+        JSStringRelease(urlRef);
+    }
 }
 
 - (void)loadModule:(NSURL*)url withName:(NSString*)name inContext:(JSContextRef)context {
@@ -183,6 +232,20 @@ static JSValueRef NodeContextExit(JSContextRef ctx, JSObjectRef function, JSObje
 
 - (void)exit:(int)exitCode {
     _exitCode = exitCode;
+}
+
+- (void)setArguments:(NSArray <NSString*>*)argv inContext:(JSContextRef)ctx {
+    JSObjectRef process = JSObjectGetProcess(ctx);
+    JSObjectRef array   = JSObjectMakeArray(ctx, 0, NULL, NULL);
+    
+    unsigned int index = 0;
+    for (NSString* entry in argv) {
+        JSObjectSetPropertyAtIndex(ctx, array, index++, JSValueFromNSString(ctx, entry), NULL);
+    }
+    
+    JSStringRef name = JSStringCreateWithUTF8CString("argv");
+    JSObjectSetProperty(ctx, process, name, array, kJSPropertyAttributeNone, NULL);
+    JSStringRelease(name);
 }
 
 - (void)unhandledException:(JSValueRef)exception inContext:(JSContextRef)context {

@@ -10,6 +10,7 @@
 
 #pragma mark -
 - (NSData *)readFile:(NSString *)path options:(NSDictionary *)options;
+- (NSInteger)writeFile:(NSString *)path data:(NSData*)data options:(NSDictionary *)options error:(NSError**)error;
 
 #pragma mark -
 - (NSArray<NSString*>*)readDir:(NSString *)path;
@@ -29,6 +30,10 @@
 @interface StandardNodeFS : NSObject <NodeFS>
 @property (nonatomic, retain) NSString* cwd;
 - (NSString*)map:(NSString*)path;
+@end
+
+@interface InlineNodeFS : NSObject <NodeFS>
+- (instancetype)initWithInlineMap:(NSDictionary<NSString*,NSData*>*)inlines chain:(id <NodeFS>)chain;
 @end
 
 void NodeFSExpose(JSContextRef context, JSValueRef* exception);

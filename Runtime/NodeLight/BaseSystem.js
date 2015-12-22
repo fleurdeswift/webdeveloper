@@ -25,7 +25,8 @@
             "kMaxLength": 2147483647
         },
         "os": {
-            "platform": function() { return process.platform; }
+            "platform": function() { return process.platform; },
+            "EOL": "\n"
         },
         "fs": {
         },
@@ -43,8 +44,15 @@
         method(module);
         modules[name] = module.exports;
     }
+
+    function createSandbox(filename) {
+        this.__filename = filename;
+    }
+
+    createSandbox.prototype = exports;
  
-    exports.require = require;
-    exports.registerModule = registerModule;
-    exports.process = process;
+    exports.createSandbox    = createSandbox;
+    exports.registerModule   = registerModule;
+    exports.require          = require;
+    exports.process          = process;
 })(this);
